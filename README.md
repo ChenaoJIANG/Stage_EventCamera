@@ -26,3 +26,15 @@ Le processus de stage:
 5.17 只有一个只用evimo2训练的网络效果不错，其余的（光流有问题，depth有问题）不好，但目前的网络只能用于分割移动物体，但如果有多个物体也只能将其与背景分割开（同一个mask），并不能将不同物体分开（比如用不同颜色的mask分割不同objet）
 研究multi-task的论文，尝试优化网络，比如使用现有网络得到的光流，depth以及gt mask作为input，用multi task网络增加分割不同物体的新task
 
+5.24 网络结构了解不清，开始细致的研究网络细节，画网络图，研究loss
+
+5.31 pixelpose的网络改进，输出residuel的信息 是xyz的速度信息，希望通过聚类算法进行聚类；尝试使用kmeans
+
+6.7 研究seg方面以及聚类的论文；合并速度信息和坐标信息使用kmeans有进步，但需要定义k且无监督，放弃；光流的color wheel显示
+了解几大类分割，以及其不同的metric
+
+6.14 两个option，1.用pose网络，使用mask进行语义分割（如segnet）； 2.用pixelpose网络，使用速度和位置信息进行聚类，需要自己写网络，输入是信息流（不用是image）
+先尝试第一个option；由于数据集中很多物体都没动也没出现，有一些类没有样例，会影响别的类；并且不能只识别运动物体，所以尝试用multi task learning，一个task是motion mask，另一个语义分割
+但还是数据集的问题，以及multi task loss权重的设计 需要进一步改进；
+将数据集没出现的类删掉（29变为12类）
+设计loss自适应权重
