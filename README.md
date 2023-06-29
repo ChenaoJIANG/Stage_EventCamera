@@ -1,4 +1,4 @@
-# Stage_EventCamera
+# Stage_EventCamera  日期为汇报日， 记录汇报之后的任务
 The research objective of the internship is to segment moving objects from event-based vision in the context of driving scenes
 
 Le processus de stage:
@@ -38,3 +38,33 @@ Le processus de stage:
 但还是数据集的问题，以及multi task loss权重的设计 需要进一步改进；
 将数据集没出现的类删掉（29变为12类）
 设计loss自适应权重
+
+6.21 继续删除不需要的类（12变7类）确认两个同方向移动的物体可以语义分割开（原来用聚类不太行）
+该交叉熵损失函数里，每个类的权重，背景占比很大，权重就得小
+数据增强：随机反转，随机缩放，随机剪切...
+  语义分割的gt图像包括labels，放大缩小需要使用Nearest-neighbor interpolation，而不能用初始的插值
+先手动调整每个损失函数的权重（depth，bg，label：1 1 1 or 0.5 5 0.4）结果差不了太多，但111更稳定，泛化也好一点（gt缺失的时候，预测也应该能预测出来）
+尝试自适应权重的方法；Dynamic Weight Average(dwa)：保证每个任务的速度相近，loss变化大，weight就变小
+GradNorm要算gradient，计算量大，保证每个任务的速度和量级都相近，111效果已经不错了，太复杂没必要
+
+6.28 了解tensorboard怎么用，add scalar， add image， add graph等等，远程gpu上怎么用本地浏览器看实时tensorboard网页
+训练集，验证集，测试集重新分配；
+目前网络共用encode和decode，因为目前这种两个预测会互相影响，语义分割也会只在物体动的时候分割
+尝试只共用encode，写一个简单的decode来语义分割；比较一下那种更好；可以将语义的gt用原始的gt（no moving）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
