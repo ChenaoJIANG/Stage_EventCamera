@@ -50,7 +50,14 @@ GradNorm要算gradient，计算量大，保证每个任务的速度和量级都�
 6.28 了解tensorboard怎么用，add scalar， add image， add graph等等，远程gpu上怎么用本地浏览器看实时tensorboard网页
 训练集，验证集，测试集重新分配；
 目前网络共用encode和decode，因为目前这种两个预测会互相影响，语义分割也会只在物体动的时候分割
+（共享en/de，对于测试集效果不好，因为semantic不好同时也影响了motion seg）
+（共享en，motion seg对测试集效果不错，但semantic还是不行）
 尝试只共用encode，写一个简单的decode来语义分割；比较一下那种更好；可以将语义的gt用原始的gt（no moving）
+选用mIoU来评估（对于semantic）
+
+7.5 将semantic的gt改用原始的gt（no moving），看看网络会不会有什么interesant
+要将dataloader.py大改！
+
 
 
 
