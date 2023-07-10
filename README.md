@@ -56,7 +56,10 @@ GradNorm要算gradient，计算量大，保证每个任务的速度和量级都�
 选用mIoU来评估（对于semantic）
 
 7.5 将semantic的gt改用原始的gt（no moving），看看网络会不会有什么interesant
-要将dataloader.py大改！
+要将dataloader.py大改！ 
+改良之后测试集只能在部分scene效果较好 miou=0.4/0.7 这部分scene是样本较多的
+而且目前没有人在evimo2上测试，没有比较
+所以又重新在evimo1上用multi-task网络测试
 
 
 
